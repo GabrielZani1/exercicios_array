@@ -16,16 +16,22 @@ function maiorValor() {
     $array_num = [1, 5, 7, 8, 1, 20];
 
     echo "1. Escreva uma função que receba um array de valores numéricos e retorne o valor mais alto.\n";
-    echo "* Entrada: [1, 5, 7, 8, 1, 20]\n";    
-    echo "* Saída: ".max($array_num)."\n";
+    echo "* Entrada: [1, 5, 7, 8, 1, 20]\n";
+    usort($array_num, 'ordernaArrayDesc');    
+    echo "* Saída: ".$array_num[0]."\n";
 }
 
 function somarValores() {
     $array_soma = [1, 5, 7, 1];
+    $soma_total = 0;
 
     echo "\n\n2. Escreva uma função que receba um array de valores numéricos e retorne a soma dos valores.\n";
-    echo "* Entrada: [1, 5, 7, 1]\n";
-    echo "* Saída: ". array_sum($array_soma)."\n";
+    echo "* Entrada: [1, 5, 7, 1]\n";    
+
+    foreach ($array_soma as $valor) {
+        $soma_total += $valor;
+    }
+    echo "* Saída: ".$soma_total."\n";
 }
 
 function valoresIntercalados() {
@@ -90,8 +96,8 @@ function embaralharArray() {
     echo "\n\n5. Escreva uma função que embaralhe um array.\n";
     echo "* Entrada: [1, 2, 3, 4, 5]\n";
     echo "* Saída: [";
-
-    shuffle($array_emb);
+    
+    usort($array_emb, 'shuffleArray');
 
     foreach ($array_emb as $key => $valor) {
         echo $valor;
@@ -134,7 +140,7 @@ function ordenarArray() {
     echo "* Entrada: [1, 5, 2, 4, 3]\n";
     echo "* Saída: [";
 
-    sort($array_ord);
+    usort($array_ord, 'ordernaArrayAsc');
 
     foreach ($array_ord as $key => $valor) {
         echo $valor;
@@ -143,43 +149,52 @@ function ordenarArray() {
             echo ", ";
         } 
     }
-    echo "]\n";     
+    echo "]\n";      
 }
 
 function removaValorDuplicado() {
-    $array_duplic = [1, 2, 3, 3, 4, 5, 4];
+    $array_duplic = [1, 2, 3, 3, 4, 5, 4];        
+    $old_valor = null;
+    $old_key = null;
 
     echo "\n\n8. Escreva uma função que remova valores duplicados de um array.\n";
     echo "* Entrada: [1, 2, 3, 3, 4, 5, 4]\n";
     echo "* Saída: [";
 
-    $array_nao_dupl = array_unique($array_duplic, SORT_NUMERIC);
+    usort($array_duplic, 'ordernaArrayAsc');
     
-    foreach ($array_nao_dupl as $valor) {
-        echo $valor;
-
-        if ($valor < count($array_nao_dupl)) {
-            echo ", ";
-        } 
+    foreach ($array_duplic as $key => $valor) {        
+        if ($old_valor != $valor) {
+            if ($old_key != $key) {
+                echo ", ";
+            } 
+            echo $valor; 
+            $old_key = $key;         
+        }
+        $old_valor = $valor;                    
     }
-    echo "]\n";   
+    echo "]\n";
 }
 
 function revertaArray() {
     $array = [1, 2, 3, 4, 5];
+    $posicao = -1;    
 
     echo "\n\n9. Escreva uma função que reverta um array.\n";
     echo "* Entrada: [1, 2, 3, 4, 5]\n";
     echo "* Saída: [";
     
-    $array_revert = array_reverse($array);
+    foreach ($array as $a) {
+        $posicao ++;
+    }
+   
+    while ($posicao >= 0) {
+        echo $array[$posicao];
 
-    foreach ($array_revert as $key => $valor) {
-        echo $valor;
-
-        if ($key < count($array_revert) -1) {
+        if ($posicao > 0) {
             echo ", ";
-        } 
+        }
+        $posicao --;
     }
     echo "]\n"; 
 }
@@ -213,6 +228,18 @@ function achatarArrayMult($array_mult) {
         }
     }
     return $array_achatado;
+}
+
+function ordernaArrayAsc($a, $b) {
+    return $a > $b;
+}
+
+function ordernaArrayDesc($a, $b) {
+    return $a < $b;
+}
+
+function shuffleArray($a, $b) {    
+    return rand(-1, 1);
 }
 
 ?>
